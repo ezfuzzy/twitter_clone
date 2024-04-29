@@ -24,14 +24,10 @@ export default function CreateAccount() {
 
     const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { target: { name, value } } = e;
+        // const { name, value } = e.target;
 
-        if (name === "name") {
-            setName(value);
-        } else if (name === "email") {
-            setEmail(value);
-        } else if (name === "password") {
-            setPasssword(value);
-        }
+        // console.log(e.target.value);
+        name === "name" ? setName(value) : name === "email" ? setEmail(value) : setPasssword(value);
     };
     const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
@@ -43,7 +39,7 @@ export default function CreateAccount() {
             // redirect to home
             setLoading(true);
             const credentials = await createUserWithEmailAndPassword(auth, email, password);
-            console.log(credentials.user);
+            // console.log(credentials.user);
             await updateProfile(credentials.user, {
                 displayName: name,
             });

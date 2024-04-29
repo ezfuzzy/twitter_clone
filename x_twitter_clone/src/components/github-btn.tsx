@@ -30,6 +30,7 @@ export default function GithubButton() {
             const provider = new GithubAuthProvider();
             await signInWithPopup(auth, provider);
             navigate("/");
+            // sendPasswordResetEmail(); 
         } catch (error) {
             console.log(error);
         }

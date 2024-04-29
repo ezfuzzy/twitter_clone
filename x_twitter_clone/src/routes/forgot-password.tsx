@@ -1,41 +1,37 @@
 import { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom"; // Link
+import { auth } from "./firebase"
 import { FirebaseError } from "firebase/app";
-import { signInWithEmailAndPassword } from "firebase/auth";
-import { auth } from "./firebase";
+//import { signInWithEmailAndPassword } from "firebase/auth";
+//import { auth } from "./firebase";
 import {
     Error,
     Input,
-    Switcher,
+    //Link, 
     Title,
     Wrapper,
     Form,
 } from "../components/auth-components";
-import GithubButton from "../components/github-btn";
+// import GithubButton from "../components/github-btn";
+import { sendPasswordResetEmail } from "firebase/auth";
 
-export default function CreateAccount() {
+export default function ForgotPassword() {
     const navigate = useNavigate();
     const [isLoading, setLoading] = useState(false);
     const [email, setEmail] = useState("");
-    const [password, setPasssword] = useState("");
     const [error, setError] = useState("");
 
     const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { target: { name, value } } = e;
-
-        if (name === "email") {
-            setEmail(value);
-        } else if (name === "password") {
-            setPasssword(value);
-        }
+        name === "email" ? setEmail(value) : undefined;
     };
     const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         setError("");
-        if (isLoading || email === "" || password === "") return;
+        if (isLoading || email === "") return;
         try {
             setLoading(true);
-            await signInWithEmailAndPassword(auth, email, password);
+            await sendPasswordResetEmail(auth, email);
             navigate("/");
         } catch (e) {
             // process error
@@ -47,25 +43,23 @@ export default function CreateAccount() {
         } finally {
             setLoading(false);
         }
-        
-        
-        console.log(email, password);
     };
     return (
         <Wrapper>
-            <Title>Login X</Title>
+            <Title>Reset your password</Title>
             <Form onSubmit={onSubmit}>
                 <Input onChange={onChange} name="email" value={email} placeholder="Email" type="email" required />
-                <Input onChange={onChange} name="password" value={password} placeholder="Password" type="password" required />
-                <Input type="submit" value={isLoading ? "Loading......" : "Create Account"} />
+                {/* captcha */}
+                <Input type="submit" value={isLoading ? "Loading......" : "Send password reset email"} />
             </Form>
             {error !== "" ? <Error>{error}</Error> : null}
+            {/* 
             <Switcher>
-                Don't have an account?{" "} 
-                <Link to="/create-account">Create one &rarr;</Link><br />
-                <Link to="/forgot-password">Forgot Password?</Link>
+                Can you guess your password?{" "}
+                <Link to="/login">Go Login &rarr;</Link>
             </Switcher>
-            <GithubButton />
+            <GithubButton /> 
+            */}
         </Wrapper>
     );
 }

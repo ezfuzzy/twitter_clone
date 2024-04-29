@@ -12,6 +12,7 @@ import { useEffect } from "react";
 import LoadingScreen from "./components/loading-screen";
 import { auth } from "./routes/firebase";
 import ProtectedRoute from "./components/protected_route";
+import ForgotPassword from "./routes/forgot-password";
 
 const router = createBrowserRouter([
   {
@@ -47,6 +48,10 @@ const router = createBrowserRouter([
   {
     path: "/create-account",
     element: <CreateAccount />,
+  },
+  {
+    path: "/forgot-password",
+    element: <ForgotPassword />,
   },
 ]);
 
