@@ -48,8 +48,7 @@ export default function CreateAccount() {
             setLoading(false);
         }
         
-        
-        console.log(email, password);
+        // console.log(email, password);
     };
     return (
         <Wrapper>
@@ -57,7 +56,7 @@ export default function CreateAccount() {
             <Form onSubmit={onSubmit}>
                 <Input onChange={onChange} name="email" value={email} placeholder="Email" type="email" required />
                 <Input onChange={onChange} name="password" value={password} placeholder="Password" type="password" required />
-                <Input type="submit" value={isLoading ? "Loading......" : "Create Account"} />
+                <Input type="submit" value={isLoading ? "Loading......" : "Login"} />
             </Form>
             {error !== "" ? <Error>{error}</Error> : null}
             <Switcher>

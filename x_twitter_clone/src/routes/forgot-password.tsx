@@ -53,13 +53,6 @@ export default function ForgotPassword() {
                 <Input type="submit" value={isLoading ? "Loading......" : "Send password reset email"} />
             </Form>
             {error !== "" ? <Error>{error}</Error> : null}
-            {/* 
-            <Switcher>
-                Can you guess your password?{" "}
-                <Link to="/login">Go Login &rarr;</Link>
-            </Switcher>
-            <GithubButton /> 
-            */}
         </Wrapper>
     );
 }
