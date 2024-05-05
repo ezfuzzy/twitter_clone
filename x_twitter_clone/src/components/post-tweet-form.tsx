@@ -17,7 +17,7 @@ export default function PostTweetForm() {
     const [tweet, setTweet] = useState("");
     const [file, setFile] = useState<File | null>(null);
     // const [error, setError] = useState("");
-
+    
     const onChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
         setTweet(e.target.value);
     };

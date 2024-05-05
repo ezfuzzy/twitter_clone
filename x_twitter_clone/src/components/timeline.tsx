@@ -19,12 +19,18 @@ const Wrapper = styled.div`
     display: flex;
     gap: 10px;
     flex-direction: column;
+    overflow-y: auto;
+    
+    /* -ms-overflow-style: none;
+    ::-webkit-scrollbar {
+        display: none;
+    } */
 `;
 
 export default function Timeline() {
     const [tweets, setTweet] = useState<ITweet[]>([]);
     // call only need 
-    useEffect(() => {
+    useEffect(() => { // realtime
         let unsubscribe: Unsubscribe | null = null;
         const fetchTweets = async () => {
             // gen query
@@ -43,7 +49,7 @@ export default function Timeline() {
                         id: doc.id,
                     };
                 });
-                setTweet(tweets);
+                setTweet(tweets);   
             });
         };
         fetchTweets();
