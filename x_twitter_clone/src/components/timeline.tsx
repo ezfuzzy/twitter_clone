@@ -59,7 +59,7 @@ export default function Timeline() {
             unsubscribe && unsubscribe();
         }
     }, []);
-        
+        // tweet에서 id 클릭하면 프로필페이지 들어갈 수 있게 하기
         return (
             <Wrapper>
                 {tweets.map((tweet) => (
