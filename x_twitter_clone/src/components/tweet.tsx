@@ -2,8 +2,9 @@
 import { auth, db, storage } from "../routes/firebase";
 import { ITweet } from "./timeline";
 import { styled } from "styled-components";
-import { deleteDoc, doc } from "firebase/firestore";
+import { deleteDoc, doc, updateDoc } from "firebase/firestore";
 import { deleteObject, ref } from "firebase/storage";
+import React from "react";
 // import { useState } from "react";
 
 const Wrapper = styled.div`
@@ -83,25 +84,33 @@ export default function Tweet({ username, photo, tweet, userId, id }: ITweet) {
         }
     }
     const onEdit = async () => {        
-        // editBtn 
-        if (user?.uid !== userId) return;
-        try {
-            // setLoading(true);
-            // const doc =  await 
-            /*
-            awaut updateDoc(doc, {
-                // data
-                data: 
-            })
-            */
-            if(photo) {
-                //await change obj ? 
-            }
-        } catch (e) {
-            console.log(e);
-        } finally {
-            // setLoading(false);
-        }
+      // editBtn 
+      if (user?.uid !== userId) return;
+      try {
+        const result = prompt('want to change')
+
+        const docRef = doc(db, "tweets", id);
+        await updateDoc(docRef, {
+          tweet: result,
+          
+        })
+        // const doc = await updateDoc()
+          // setLoading(true);
+          // const doc =  await 
+          /*
+          awaut updateDoc(doc, {
+              // data
+              data: 
+          })
+          */
+          if(photo) {
+              //await change obj ? 
+          }
+      } catch (e) {
+          console.log(e);
+      } finally {
+          // setLoading(false);
+      }
     }
 
     return (
