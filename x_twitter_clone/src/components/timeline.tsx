@@ -67,12 +67,12 @@ export default function Timeline() {
         setTweet(tweets);   
       });
     };
-  fetchTweets();
-      // useEffect's tear down, clean-up 
-      // unmount > return & cleanup -> incase: move to {profile} page
-  return () => {
-      unsubscribe && unsubscribe();
-  }
+    fetchTweets();
+        // useEffect's tear down, clean-up 
+        // unmount > return & cleanup -> incase: move to {profile} page
+    return () => {
+        unsubscribe && unsubscribe();
+    }
   }, []);
     // tweet에서 id 클릭하면 프로필페이지 들어갈 수 있게 하기
   return (

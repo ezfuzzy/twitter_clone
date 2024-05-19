@@ -1,9 +1,10 @@
 import { auth, db, storage } from "../routes/firebase";
 import { ITweet } from "./timeline";
 import { styled } from "styled-components";
-import { deleteDoc, doc, updateDoc } from "firebase/firestore";
+import { deleteDoc, doc, getDoc, updateDoc } from "firebase/firestore";
 import { deleteObject, ref } from "firebase/storage";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 const Wrapper = styled.div`
   display: grid;
@@ -15,9 +16,15 @@ const Wrapper = styled.div`
 
 const Column = styled.div``;
 
+const UsernameToProfile = styled.label`
+  cursor: pointer;
+`;
 const Username = styled.span`
   font-weight: 600;
-  font-size: 15px;
+  font-size: 16px;
+`;
+const UsernameBtn = styled.input`
+  display: none;
 `;
 
 const Photo = styled.img`
@@ -66,9 +73,28 @@ const EditBtn = styled.button`
 
 export default function Tweet({ username, photo, tweet, userId, id }: ITweet) {
   const user = auth.currentUser;
+  const navigate = useNavigate();
   const [isLiked, setIsLiked] = useState(false);
   const isLike = document.querySelector('#Like') as HTMLInputElement;
   
+  const moveToProfile = async () => {
+    const authorDoc = await getDoc(doc(db, "tweets", userId)); // < permisson error
+    const authorData = authorDoc.data();
+    const authorId = authorData?.id;
+    console.log(authorId);
+    try {
+      
+      // const tweetsRef = collection(db, "tweets");
+      // const userTweetsQuery = query(tweetsRef, where("userId", "==", userId));
+
+    navigate(`/profile/${userId}`);
+
+    } catch (error) {
+      console.log(error);
+    }
+    
+  }
+
   const LikeUpDown = async () => {
     setIsLiked(!isLiked);
     
@@ -87,8 +113,8 @@ export default function Tweet({ username, photo, tweet, userId, id }: ITweet) {
       // setLoading(true);
       await deleteDoc(doc(db, "tweets", id));
       if (photo) {
-          const photoREf = ref(storage, `tweets/${userId}/${id}`)
-          await deleteObject(photoREf);
+          const photoRef = ref(storage, `tweets/${userId}/${id}`)
+          await deleteObject(photoRef);
       }
     } catch (e) {
       console.log(e);
@@ -96,7 +122,7 @@ export default function Tweet({ username, photo, tweet, userId, id }: ITweet) {
       // setLoading(false);
     }
   }
-  const onEdit = async () => {        
+  const onEdit = async () => {
     // editBtn 
     if (user?.uid !== userId) return;
     try {
@@ -123,7 +149,10 @@ export default function Tweet({ username, photo, tweet, userId, id }: ITweet) {
         {/* 여기서 username이 real-time으로 수정 되어야함.  */}
         {/* 현재는 저장된 후 바뀌지 않는 구조 */}
         {/* tweet의 username에 접근할 수 있어야함. */}
-        <Username>{username}</Username>
+        <UsernameToProfile htmlFor="username">
+          <Username>{username}</Username>
+        </UsernameToProfile>
+        <UsernameBtn id="username" type="button" onClick={moveToProfile} />
         <Payload>{tweet}</Payload>
         <LikeBtn id="Like" htmlFor="Like00" onClick={LikeUpDown}>
           <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
